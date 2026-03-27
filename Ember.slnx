@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Ember.Editor/Ember.Editor.csproj" />
+  <Project Path="Ember/Ember.csproj" />
+</Solution>

@@ -1,0 +1,39 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Tiled/map.tmx
+/copy:Tiled/map.tmx
+
+#begin Tiled/playground.tiled-project
+/copy:Tiled/playground.tiled-project
+
+#begin Tiled/playground.tiled-session
+/copy:Tiled/playground.tiled-session
+
+#begin Tiled/tilemap_packed.tsx
+/copy:Tiled/tilemap_packed.tsx
+
+#begin tilemap_packed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tilemap_packed.png
+
