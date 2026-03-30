@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Ember.Utils;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ember.Tiled;
 
 public class ObjectLayer
 {
-    public ObjectLayer(XElement objectLayerElement)
+    public string Name { get; set; }
+    public List<Object> Objects { get; set; } = new(8);
+    public int TileSize { get; set; }
+    public float Alpha { get; set; } = 1.0f;
+    public Color Tint { get; set; } = Color.White;
+    [JsonConstructor]
+    public ObjectLayer()
+    { }
+    public ObjectLayer(string name, int tileSize)
     {
-        Id = int.Parse(objectLayerElement.Attribute("id")?.Value ?? throw new Exception("Object group without ID"));
-        Name = objectLayerElement.Attribute("name")?.Value ?? throw new Exception("Object group without Name");
-        Class = objectLayerElement.Attribute("class")?.Value;
-
-        var objectGroupElements = objectLayerElement.Elements("object").ToImmutableArray();
-        Objects = new List<Object>(objectGroupElements.Length);
-        foreach (var objElement in objectGroupElements)
+        Name = name;
+        TileSize = tileSize;
+    }
+    public void Draw(Texture2D atlas, SpriteBatch spriteBatch)
+    {
+        foreach (var obj in Objects)
         {
-            var obj = new Object();
-            obj.GId = int.Parse(objElement.Attribute("gid")?.Value ?? "-1");
-            obj.Name = objElement.Attribute("name")?.Value;
-            obj.Class = objElement.Attribute("class")?.Value;
-            obj.X = int.Parse(objElement.Attribute("x")?.Value ??
-                              throw new InvalidOperationException("Object group without X"));
-            obj.Y = int.Parse(objElement.Attribute("y")?.Value ??
-                              throw new InvalidOperationException("Object group without Y"));
-            Objects.Add(obj);
+            spriteBatch.Draw(atlas, obj.Pos, atlas.GetSourceRect(TileSize,obj.GId), Tint * Alpha);
         }
     }
-
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string? Class { get; set; }
-    public List<Object> Objects { get; set; }
 }

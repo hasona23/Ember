@@ -8,8 +8,9 @@ namespace Ember;
 
 public class ScreenManager : IDisposable
 {
-    private readonly RenderTarget2D _screenBuffer;
-    private readonly WindowSettings _windowSettings;
+    private RenderTarget2D _screenBuffer;
+    private WindowSettings _windowSettings;
+    
     private readonly GameWindow _window;
     private readonly GraphicsDeviceManager _graphics;
     private Rectangle _prevBounds;
@@ -43,6 +44,10 @@ public class ScreenManager : IDisposable
 
     }
 
+    public Vector2 Resolution()
+    {
+        return new Vector2(_windowSettings.Width, _windowSettings.Height);
+    }
     public bool IsFullScreen { get; private set; }
 
     public void Dispose()
@@ -81,6 +86,13 @@ public class ScreenManager : IDisposable
         OnWindowSizeChanged(null,EventArgs.Empty);
     }
 
+    public void ChangeResolution(Point resolution)
+    {
+        _windowSettings.Width = resolution.X;
+        _windowSettings.Height = resolution.Y;
+        _screenBuffer.Dispose();
+        _screenBuffer = new RenderTarget2D(_graphics.GraphicsDevice, resolution.X, resolution.Y);
+    }
     public void OnWindowSizeChanged(object? sender, EventArgs e)
     {
         var windowSize = _window.ClientBounds.Size.ToVector2();

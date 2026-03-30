@@ -1,0 +1,58 @@
+{
+  "Name": "MySettings",
+  "InitialColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255,
+    "PackedValue": 4294967295
+  },
+  "FinalColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255,
+    "PackedValue": 4294967295
+  },
+  "AlphaChangeWithTime": 2,
+  "MaxSpeed": 500,
+  "MinSpeed": 300,
+  "SpeedChangeWithTime": 2,
+  "MaxAngularSpeed": 1000,
+  "MinAngularSpeed": 1000,
+  "AngularSpeedChangeWithTime": 2,
+  "Gravity": 0,
+  "MaxSize": 1,
+  "MinSize": 1,
+  "SizeChangeWithTime": 2,
+  "MaxParticles": 128,
+  "ParticlesPerSpawn": 16,
+  "SpawnCooldown": 1,
+  "SpawnDirection": 0,
+  "Bounds": {
+    "Left": 235,
+    "Right": 245,
+    "Top": 130,
+    "Bottom": 140,
+    "IsEmpty": false,
+    "Location": {
+      "X": 235,
+      "Y": 130
+    },
+    "Size": {
+      "X": 10,
+      "Y": 10
+    },
+    "Center": {
+      "X": 240,
+      "Y": 135
+    },
+    "X": 235,
+    "Y": 130,
+    "Width": 10,
+    "Height": 10
+  },
+  "MaxLife": 1,
+  "MinLife": 0.5,
+  "TextureName": "Circle"
+}

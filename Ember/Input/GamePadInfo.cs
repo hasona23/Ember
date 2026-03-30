@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ember;
+namespace Ember.Input;
 
 public class GamePadInfo
 {

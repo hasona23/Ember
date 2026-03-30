@@ -30,4 +30,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Ember\Ember.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Content\ParticleSystemSettings\" />
+    </ItemGroup>
 </Project>

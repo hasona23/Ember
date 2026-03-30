@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Ember;
+namespace Ember.Input;
 
-public static class Input
+public static class InputManager
 {
     /// <summary>
     /// Gets the state information of keyboard input.
@@ -19,7 +19,7 @@ public static class Input
     /// </summary>
     public static GamePadInfo[] GamePads { get; private set; }
 
-    static Input()
+    static InputManager()
     {
         Keyboard = new KeyboardInfo();
         Mouse = new MouseInfo();

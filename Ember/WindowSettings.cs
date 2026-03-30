@@ -1,9 +1,17 @@
 ﻿namespace Ember;
 
-public record WindowSettings(
-    string Title,
-    int Width,
-    int Height,
-    bool AllowResizing = true,
-    bool FullScreen = false,
-    bool Borderless = false);
+public struct WindowSettings(
+    string title,
+    int width,
+    int height,
+    bool allowResizing = true,
+    bool fullScreen = false,
+    bool borderless = false)
+{
+    public readonly string Title = title;
+    public int Width { get; set; }= width;
+    public int Height { get; set; }= height;
+    public readonly bool AllowResizing = allowResizing;
+    public readonly bool FullScreen = fullScreen;
+    public readonly bool Borderless = borderless;
+}

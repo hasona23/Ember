@@ -1,7 +1,10 @@
-﻿using Ember.Utils;
+﻿using Ember.Input;
+using Ember.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Ember;
 
@@ -9,11 +12,12 @@ public abstract class Core : Game
 {
     public static Texture2D Circle { get; private set; } = null!;
     public static Texture2D Pixel { get; private set; } = null!;
+    public static SpriteFont DefaultFont {  get; private set; } = null!;
     
     protected readonly GraphicsDeviceManager Graphics;
     protected SpriteBatch SpriteBatch = null!;
-    private ImGuiRenderer _imGuiRenderer = null!;
-    protected ScreenManager ScreenManager { get; set; } = null!;
+    public ImGuiRenderer ImGuiRenderer { get; private set; }= null!;
+    public ScreenManager ScreenManager { get; set; } = null!;
     protected readonly WindowSettings WindowSettings;
     protected Core(WindowSettings windowSettings)
     {
@@ -21,7 +25,6 @@ public abstract class Core : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         WindowSettings = windowSettings;
-
     }
 
     protected override void Initialize()
@@ -30,8 +33,15 @@ public abstract class Core : Game
         base.Initialize();
         SpriteBatch = new SpriteBatch(GraphicsDevice);
         CreateShapeTextures();
-        _imGuiRenderer = new ImGuiRenderer(this);
-        _imGuiRenderer.RebuildFontAtlas();
+        ImGuiRenderer = new ImGuiRenderer(this);
+        ImGuiRenderer.RebuildFontAtlas();
+        try
+        {
+            DefaultFont = Content.Load<SpriteFont>("Font");
+        }catch(ContentLoadException ex)
+        {
+            Console.Error.WriteLine($"Error Reading Default font: {ex.Message}");
+        }
         Init();
     }
 
@@ -39,16 +49,19 @@ public abstract class Core : Game
     {
         base.UnloadContent();
         Destroy();
+        Pixel.Dispose();
+        Circle.Dispose();
     }
 
     private void CreateShapeTextures()
     {
         Pixel = new Texture2D(GraphicsDevice, 1, 1);
+        Pixel.Name = "Pixel";
         Pixel.SetData(new[] { Color.White });
 
         int diameter = 16;
         Color[] data = new Color[diameter*diameter];
-        Vector2 center = new Vector2(diameter / 2f);
+        Vector2 center = new Vector2(diameter / 2f)-Vector2.One/2;
         for (int y = 0; y < diameter; y++)
         {
             for (int x = 0; x < diameter; x++)
@@ -59,6 +72,7 @@ public abstract class Core : Game
         }
         Circle = new Texture2D(GraphicsDevice, diameter, diameter);
         Circle.SetData(data);
+        Circle.Name = "Circle";
     }
   
     protected override void Update(GameTime gameTime)
@@ -66,26 +80,20 @@ public abstract class Core : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
         
-        Input.Update(gameTime,ScreenManager);
+        InputManager.Update(gameTime,ScreenManager);
         Time.Update(gameTime);
         UpdateCore(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        
-        ScreenManager.AttachScreenBuffer();
         DrawCore(gameTime);
-        ScreenManager.DetachScreenBuffer();
         
-        ScreenManager.DrawScreen(SpriteBatch);
-        
-        _imGuiRenderer.BeforeLayout(gameTime);
+        ImGuiRenderer.BeforeLayout(gameTime);
         DrawImGui();
-        _imGuiRenderer.AfterLayout();
+        ImGuiRenderer.AfterLayout();
     }
+
 
     protected abstract void Init();
     protected abstract void Destroy();

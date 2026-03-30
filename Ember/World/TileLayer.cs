@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
+using System.Text.Json.Serialization;
 using Ember.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,37 +15,25 @@ public class TileLayer
         new(1, 0), new(0, 0), new(-1, 0),
         new(1, -1), new(0, -1), new(-1, -1)
     ];
-
-    public int Id { get; set; }
     public int TileSize { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    public Tile[] Tiles { get; set; }
+    public Tile[] Tiles { get; set; } 
     public string Name { get; set; }
-    public string? Class { get; set; }
+    public float Alpha { get; set; } = 1.0f;
+    public Color Tint { get; set; } = Color.White;
+    [JsonConstructor]
+    public TileLayer()
+    {}
 
-    public TileLayer(XElement layerElement, int tileSize)
+    public TileLayer(string name, int width, int height, int tileSize)
     {
-        using var w = new BenchmarkWatch($"Layer {Name} Loading");
-
+        Name = name;
         TileSize = tileSize;
-        Id = int.Parse(layerElement.Attribute("id")?.Value ?? throw new Exception("Layer Id not found"));
-        Class = layerElement.Attribute("class")?.Value;
-        Name = layerElement.Attribute("name")?.Value ?? "TileLayer";
-        Width = int.Parse(
-            layerElement.Attribute("width")?.Value ?? throw new Exception($"Cant read layer {Name} width"));
-        Height = int.Parse(layerElement.Attribute("height")?.Value ?? throw new Exception($"Layer {Name} height"));
-
-        var data = layerElement.Element("data")?.Value.Split(',') ?? throw new Exception($"Layer {Name} has no data");
-
-        Tiles = new Tile[data.Length];
-        for (var i = 0; i < data.Length; i++)
-        {
-            var id = int.Parse(data[i]);
-            Tiles[i] = new Tile(id - 1, i % Width * tileSize, i / Width * tileSize);
-        }
+        Width = width;
+        Height = height;
+        Tiles = new Tile[width * height];
     }
-
     public List<Tile> GetNearTiles(Vector2 pos)
     {
         var tiles = new List<Tile>(9);
@@ -63,17 +51,58 @@ public class TileLayer
         return tiles;
     }
 
-    public void DrawTiles(Texture2D tileset, SpriteBatch spriteBatch)
+    public Tile? GetTileAt(int x, int y)
     {
-        foreach (Tile tile in Tiles)
+        x /= TileSize;
+        y /= TileSize;
+        int index = y * Width + x;
+        if (index >= 0 && index < Tiles.Length) 
+            return Tiles[index];
+        return null;
+    }
+
+    public void SetTileAt(int x, int y, Tile tile)
+    {
+        x /= TileSize;
+        y /= TileSize;
+        int index = y * Width + x;
+        if (index >= 0 && index < Tiles.Length)
+            Tiles[index] = tile;
+    }
+
+    public Vector2 GetTilePos(int index)
+    {
+        if (index < 0 || index >= Tiles.Length)
+            return -Vector2.One;
+        Vector2 pos = new Vector2
         {
-            if (tile.GId == -1)
+            X = index % Width ,
+            // ReSharper disable once PossibleLossOfFraction
+            Y = index / Width
+        } * TileSize;
+       
+        return pos;
+    }
+    public void SetTileGIdAt(int x, int y, int gid)
+    {
+        x /= TileSize;
+        y /= TileSize;
+        int index = y * Width + x;
+        if (index >= 0 && index < Tiles.Length)
+            Tiles[index].GId = gid;
+    }
+    
+    public void Draw(Texture2D atlas,SpriteBatch spriteBatch)
+    {
+        for (int tileIndex = 0; tileIndex <Tiles.Length; tileIndex++)
+        {
+            Tile tile = Tiles[tileIndex];
+            if (tile.GId == 0)
+            {
                 continue;
-            var src = new Rectangle(0, 0, TileSize, TileSize);
-            var tileSetWidthTiles = tileset.Width / TileSize;
-            src.X = tile.GId % tileSetWidthTiles * TileSize;
-            src.Y = (int)MathF.Floor((float)tile.GId / tileSetWidthTiles) * TileSize;
-            spriteBatch.Draw(tileset, tile.Position, src, Color.White);
+            }
+
+            spriteBatch.Draw(atlas, GetTilePos(tileIndex), atlas.GetSourceRect(TileSize,tile.GId), Tint * Alpha);
         }
     }
 }
