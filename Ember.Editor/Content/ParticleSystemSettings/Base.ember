@@ -1,0 +1,58 @@
+{
+  "Name": "Settings1",
+  "InitialColor": {
+    "B": 255,
+    "G": 0,
+    "R": 102,
+    "A": 255,
+    "PackedValue": 4294901862
+  },
+  "FinalColor": {
+    "B": 196,
+    "G": 255,
+    "R": 0,
+    "A": 255,
+    "PackedValue": 4291100416
+  },
+  "AlphaChangeWithTime": 2,
+  "MaxSpeed": 500,
+  "MinSpeed": 300,
+  "SpeedChangeWithTime": 2,
+  "MaxAngularSpeed": 0,
+  "MinAngularSpeed": 0,
+  "AngularSpeedChangeWithTime": 2,
+  "Gravity": 0,
+  "MaxSize": 40,
+  "MinSize": 20,
+  "SizeChangeWithTime": 2,
+  "MaxParticles": 131072,
+  "ParticlesPerSpawn": 8192,
+  "SpawnCooldown": 2,
+  "SpawnDirection": 0,
+  "Bounds": {
+    "Left": 950,
+    "Right": 970,
+    "Top": 530,
+    "Bottom": 550,
+    "IsEmpty": false,
+    "Location": {
+      "X": 950,
+      "Y": 530
+    },
+    "Size": {
+      "X": 20,
+      "Y": 20
+    },
+    "Center": {
+      "X": 960,
+      "Y": 540
+    },
+    "X": 950,
+    "Y": 530,
+    "Width": 20,
+    "Height": 20
+  },
+  "MaxLife": 5,
+  "MinLife": 2,
+  "TextureName": "Square"
+}

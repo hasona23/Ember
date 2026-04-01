@@ -25,16 +25,21 @@ public class ParticleSystem:IParticleSystem,IDisposable
     {
         for (int i = 0; i < Settings.ParticlesPerSpawn; i++)
         {
-            AdjustParticle(ref Particles.Data[Particles.Index++]);
+            AdjustParticle(ref Particles.Data[Particles.Index]);
+            Particles.Index++;
         }
     }
     
     public void Update()
     {
-        
-            
-        if(Settings.MaxParticles != Particles.Capacity)
+
+
+        if (Settings.MaxParticles != Particles.Data.Length)
+        {
             Particles.Resize(Settings.MaxParticles);
+            Settings.MaxParticles = Particles.Data.Length;
+        }
+
         float dt = Time.DeltaTime;
         
         if (Settings.SpawnCooldown > 0)

@@ -274,6 +274,8 @@ public class ParticleSystemSettings
             if (ImGui.BeginPopupModal("TextureErrorPopup"))
             {
                 ImGui.TextColored(new(1, 0, 0, 1), "Couldn't load texture:" + _newTextureBuffer);
+                if(ImGui.Button("Close"))
+                    ImGui.CloseCurrentPopup();
                 ImGui.EndPopup();
             }
 

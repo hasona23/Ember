@@ -81,14 +81,14 @@ public abstract class Core : Game
             Exit();
         
         InputManager.Update(gameTime,ScreenManager);
-        Time.Update(gameTime);
-        UpdateCore(gameTime);
+        Time.UpdateUps(gameTime);
+        UpdateCore(gameTime); 
     }
 
     protected override void Draw(GameTime gameTime)
     {
         DrawCore(gameTime);
-        
+        Time.UpdateFps(gameTime);
         ImGuiRenderer.BeforeLayout(gameTime);
         DrawImGui();
         ImGuiRenderer.AfterLayout();

@@ -9,7 +9,7 @@ public class CircularArray<T>(int capacity) : IDisposable
     public int Index
     {
         get;
-        set => field = value % Capacity;
+        set => field = value % Data.Length;
     }
     public T[] Data = ArrayPool<T>.Shared.Rent(capacity);
     public int Capacity => Data.Length;
