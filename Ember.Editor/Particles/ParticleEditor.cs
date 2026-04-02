@@ -18,7 +18,7 @@ public class ParticleEditor : IEditor
     private ParticleSystemSettings _particleSystemSettings;
     private string _pathBuffer = "";
     private int _gridCellSize = 16;
-    private JsonSerializerOptions _options = new JsonSerializerOptions()
+    private readonly JsonSerializerOptions _options = new JsonSerializerOptions()
     {
         IncludeFields = true,
         PropertyNameCaseInsensitive = true,
@@ -27,12 +27,12 @@ public class ParticleEditor : IEditor
 
     private int _resolutionXBuffer;
     private int _resolutionYBuffer;
-    private Color _backgroundColor = Color.Black;
+    private readonly Color _backgroundColor = Color.Black;
 
     public void Init(Core core)
     {
         _core = core;
-        _particleSystemSettings = new ParticleSystemSettings("Settings1", core.Content);
+        _particleSystemSettings ??= new ParticleSystemSettings("Settings1", core.Content);
         _particleSystem =
             new ParticleSystem(_particleSystemSettings, _core.ScreenManager.Resolution() / 2f, core.Content);
         _resolutionXBuffer = (int)core.ScreenManager.Resolution().X;
@@ -41,6 +41,7 @@ public class ParticleEditor : IEditor
 
     public void Destroy()
     {
+        _particleSystem.Dispose();
     }
 
     public void Update(GameTime gameTime)
@@ -101,11 +102,12 @@ public class ParticleEditor : IEditor
 
     public void DrawImGui()
     {
-        ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
+        ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero + new System.Numerics.Vector2(0,20));
         float width = _core.GraphicsDevice.PresentationParameters.BackBufferWidth / 5f;
         float height = _core.GraphicsDevice.PresentationParameters.BackBufferHeight;
         ImGui.SetNextWindowSize(new System.Numerics.Vector2(width, height));
         ImGui.SetNextWindowBgAlpha(0.5f);
+       
         ImGui.Begin(Name);
         {
             

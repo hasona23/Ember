@@ -2,7 +2,7 @@
 
 namespace Ember.EntitySystem;
 
-public static class World
+public static class EntityManager
 {
     private static readonly Dictionary<string, Entity> Entities = new(32);
 

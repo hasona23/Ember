@@ -20,7 +20,7 @@ public static class SceneManager
         if (string.IsNullOrEmpty(CurrentScene))
         {
             CurrentScene = name;
-            World.Clear();
+            EntityManager.Clear();
             scene.Init();
         }
     }
@@ -57,7 +57,7 @@ public static class SceneManager
     {
         Scenes[CurrentScene].Destroy();
         CurrentScene = name;
-        World.Clear();
+        EntityManager.Clear();
         Scenes[CurrentScene].Init();
     }
 }

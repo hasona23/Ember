@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Ember.Editor.Particles;
+using System.Reflection;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 
 namespace Ember.Editor;
@@ -11,19 +13,31 @@ public class Game() : Core(new WindowSettings(Title,Width,Height))
     public const int Height = 270;
     public const string Title = "Editor";
     private string _currentEditor = "";
-    private Dictionary<string,IEditor> _editors = new();
+    private readonly Dictionary<string,IEditor> _editors = new();
+    private List<string> _editorNames = new();
     protected override void Init()
     {
-        ParticleEditor particleEditor = new ParticleEditor();
-        _editors.Add(particleEditor.Name, particleEditor);
+        GetAllEditors();
         foreach (var (_, editor) in _editors)
         {
             editor.Init(this);
         }
 
         _currentEditor = _editors.Keys.First();
+        _editorNames = _editors.Keys.ToList();
     }
 
+    private void GetAllEditors()
+    {
+        var editors = Assembly.GetExecutingAssembly().GetTypes().Where(type => typeof(IEditor).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract).ToList();
+        foreach (var editor in editors)
+        {
+            IEditor instance = (IEditor)Activator.CreateInstance(editor);
+
+            if (instance != null) 
+                _editors[instance.Name] = instance;
+        }
+    }
     protected override void Destroy()
     {
         foreach (var (_,editor) in _editors)
@@ -47,6 +61,23 @@ public class Game() : Core(new WindowSettings(Title,Width,Height))
 
     protected override void DrawImGui()
     {
+        ImGui.BeginMainMenuBar();
+        {
+            if (ImGui.BeginMenu("Editors"))
+            {
+                foreach (var editorName in _editorNames)
+                {
+                    if (ImGui.MenuItem(editorName))
+                    {
+                        _editors[_currentEditor].Destroy();
+                        _currentEditor = editorName;
+                        _editors[_currentEditor].Init(this);
+                    }
+                }
+                ImGui.EndMenu();
+            }
+        }
+        ImGui.EndMainMenuBar();
         _editors[_currentEditor].DrawImGui();
     }
 }
