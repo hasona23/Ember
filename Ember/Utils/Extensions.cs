@@ -15,4 +15,35 @@ public static class Extensions
             Height = cellSize,
         };
     }
+    
+    public static void DrawGrid(this SpriteBatch spriteBatch,Point pos,int rows, int cols, int cellSize, Color color)
+    {
+        for (int i = 0; i <= rows; i++)
+        {
+            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X,pos.Y+i *cellSize,cols * cellSize+1,1),color);
+        }
+
+        for (int i = 0; i <= cols; i++)
+        {
+            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X + i *cellSize,pos.Y,1,rows * cellSize),color);
+        }
+    }
+
+    public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rectangle, Color color)
+    {
+        spriteBatch.Draw(Core.Pixel,rectangle,color);
+    }
+
+    public static void DrawHollowRectangle(this SpriteBatch spriteBatch, Rectangle rectangle, int thickness,
+        Color color)
+    {
+        //TOP
+        spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X,rectangle.Y,rectangle.Width,thickness),color);
+        //BOTTOM
+        spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X,rectangle.Y+rectangle.Height-thickness,rectangle.Width,thickness),color);
+        //RIGHT
+        spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X,rectangle.Y,thickness,rectangle.Height),color);
+        //LEFT
+        spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X+rectangle.Width-thickness,rectangle.Y,thickness,rectangle.Height),color);
+    }
 }

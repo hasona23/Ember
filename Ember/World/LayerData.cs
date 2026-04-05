@@ -1,0 +1,19 @@
+﻿using System.Text.Json.Serialization;
+using Microsoft.Xna.Framework;
+
+namespace Ember.World;
+
+public struct LayerData(string name,string tag,Map map)
+{
+    public string Name { get; set; } = name;
+    public string Tag { get; set; } = tag;
+
+    /// <summary>
+    ///Color transparency from 0.0 to 1.0
+    /// </summary>
+    public float Alpha { get; set; } = 1;
+
+    public Color Color { get; set; } = Color.White;
+
+    [JsonIgnore] public Map Map { get; set; } = map;
+}

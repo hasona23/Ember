@@ -18,6 +18,7 @@ public class ParticleEditor : IEditor
     private ParticleSystemSettings _particleSystemSettings;
     private string _pathBuffer = "";
     private int _gridCellSize = 16;
+    private const string ParticleFileExtension = ".ember";
     private readonly JsonSerializerOptions _options = new JsonSerializerOptions()
     {
         IncludeFields = true,
@@ -85,16 +86,16 @@ public class ParticleEditor : IEditor
 
     public void Save(string path)
     {
-        if (Path.GetExtension(path) != ".ember")
-            path = $"{path}.ember";
+        if (Path.GetExtension(path) != ParticleFileExtension)
+            path = $"{path}ParticleFileExtension";
         string json = JsonSerializer.Serialize(_particleSystemSettings, _options);
         File.WriteAllText(path, json);
     }
 
     public void Load(string path)
     {
-        if (Path.GetExtension(path) != ".ember")
-            path = $"{path}.ember";
+        if (Path.GetExtension(path) != ParticleFileExtension)
+            path = $"{path}ParticleFileExtension";
         string json = File.ReadAllText(path);
         _particleSystemSettings = ParticleSystemSettings.ParseFromJson(json, _core.Content);
         _particleSystem.Settings = _particleSystemSettings;
@@ -130,7 +131,7 @@ public class ParticleEditor : IEditor
                 ImGui.Text("Path: ");
                 ImGui.InputText("##path", ref _pathBuffer, 256);
                 ImGui.SameLine();
-                ImGui.Text(".ember");
+                ImGui.Text(ParticleFileExtension);
                 if (ImGui.Button("Save"))
                 {
                     Save(_pathBuffer);
@@ -147,7 +148,7 @@ public class ParticleEditor : IEditor
                 ImGui.Text("Path: ");
                 ImGui.InputText("##path", ref _pathBuffer, 256);
                 ImGui.SameLine();
-                ImGui.Text(".ember");
+                ImGui.Text(ParticleFileExtension);
                 if (ImGui.Button("Load"))
                 {
                     Load(_pathBuffer);

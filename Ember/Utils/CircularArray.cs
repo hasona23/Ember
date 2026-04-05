@@ -5,11 +5,11 @@ namespace Ember.Utils;
 
 public class CircularArray<T>(int capacity) : IDisposable
 {
-    //FIELD only available in .net 10
+    private int _index = 0;
     public int Index
     {
-        get;
-        set => field = value % Data.Length;
+        get => _index;
+        set => _index = value % Data.Length;
     }
     public T[] Data = ArrayPool<T>.Shared.Rent(capacity);
     public int Capacity => Data.Length;
