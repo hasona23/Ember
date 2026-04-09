@@ -7,6 +7,8 @@ namespace Ember.World;
 [JsonSerializable(typeof(TileLayer))]
 [JsonSerializable(typeof(ObjectLayer))]
 [JsonSerializable(typeof(MapObject))]
+[JsonSerializable(typeof(Tileset))]
+
 public partial class MapJsonContext:JsonSerializerContext
 {
     

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Ember.Vfx.Particles;
 using ImGuiNET;
@@ -64,12 +63,30 @@ public class ParticleSystemSettingsGui
         ImGui.PushItemWidth(200f);
 
         // ── Identity ──────────────────────────────────────────────────────────
+        IdentityMenu();
+        // ── Color ─────────────────────────────────────────────────────────────
+        ColorMenu();
+        // ── Motion ────────────────────────────────────────────────────────────
+        MotionMenu();
+        // ── Emission ──────────────────────────────────────────────────────────
+        EmissionMenu();
+        // ── Lifetime ──────────────────────────────────────────────────────────
+        LifeTimeMenu();
+        // ── Texture ───────────────────────────────────────────────────────────
+        TextureMenu(content);
+
+        ImGui.PopItemWidth();
+    }
+
+    private void IdentityMenu()
+    {
         if (ImGui.CollapsingHeader("General", ImGuiTreeNodeFlags.DefaultOpen))
         {
             ImGui.InputText("Name", ref _settings.Name, 128);
         }
-
-        // ── Color ─────────────────────────────────────────────────────────────
+    }
+    private void ColorMenu()
+    {
         if (ImGui.CollapsingHeader("Color"))
         {
             if (ImGui.ColorButton("##initial_color", _initialColorBuffer, ImGuiColorEditFlags.None, new Vec2(120, 24)))
@@ -119,8 +136,9 @@ public class ParticleSystemSettingsGui
                     ChangesWithTime.Length))
                 _settings.AlphaChangeWithTime = (ChangesWithTime)_alphaChangesWithTimeIndex;
         }
-
-        // ── Motion ────────────────────────────────────────────────────────────
+    }
+    private void MotionMenu()
+    {
         if (ImGui.CollapsingHeader("Motion"))
         {
             if (ImGui.TreeNode("Speed"))
@@ -145,17 +163,9 @@ public class ParticleSystemSettingsGui
 
             ImGui.DragFloat("Gravity", ref _settings.Gravity, 0.5f);
         }
-
-        // ── Size ──────────────────────────────────────────────────────────────
-        if (ImGui.CollapsingHeader("Size"))
-        {
-            ImGui.DragFloat("Min Size", ref _settings.MinSize, 0.01f, 0f, _settings.MaxSize);
-            ImGui.DragFloat("Max Size", ref _settings.MaxSize, 0.01f, _settings.MinSize, 100f);
-            if (ImGui.Combo("Size Over Time", ref _sizeChangesWithTimeIndex, ChangesWithTime, ChangesWithTime.Length))
-                _settings.SizeChangeWithTime = (ChangesWithTime)_sizeChangesWithTimeIndex;
-        }
-
-        // ── Emission ──────────────────────────────────────────────────────────
+    }
+    private void EmissionMenu()
+    {
         if (ImGui.CollapsingHeader("Emission"))
         {
             ImGui.DragInt("Max Particles", ref _settings.MaxParticles, 1, 1, 10000);
@@ -164,7 +174,15 @@ public class ParticleSystemSettingsGui
 
             if (ImGui.Combo("Spawn Direction", ref _spawnDirectionIndex, SpawnDirections, SpawnDirections.Length))
                 _settings.SpawnDirection = (SpawnDirections)_spawnDirectionIndex;
-
+            if (ImGui.TreeNode("Size"))
+            {
+                ImGui.DragFloat("Min Size", ref _settings.MinSize, 0.01f, 0f, _settings.MaxSize);
+                ImGui.DragFloat("Max Size", ref _settings.MaxSize, 0.01f, _settings.MinSize, 100f);
+                if (ImGui.Combo("Size Over Time", ref _sizeChangesWithTimeIndex, ChangesWithTime, ChangesWithTime.Length))
+                    _settings.SizeChangeWithTime = (ChangesWithTime)_sizeChangesWithTimeIndex;
+                ImGui.TreePop();
+                
+            }
             if (ImGui.TreeNode("Bounds"))
             {
                 ImGui.DragInt("Width", ref _settings.Bounds.Width, 1, 0, int.MaxValue);
@@ -172,15 +190,17 @@ public class ParticleSystemSettingsGui
                 ImGui.TreePop();
             }
         }
-
-        // ── Lifetime ──────────────────────────────────────────────────────────
+    }
+    private void LifeTimeMenu()
+    {
         if (ImGui.CollapsingHeader("Lifetime"))
         {
             ImGui.DragFloat("Min Life", ref _settings.MinLife, 1f, 0f, _settings.MaxLife);
             ImGui.DragFloat("Max Life", ref _settings.MaxLife, 1f, _settings.MinLife, 100000f);
         }
-
-        // ── Texture ───────────────────────────────────────────────────────────
+    }
+    private void TextureMenu(ContentManager content)
+    {
         if (ImGui.CollapsingHeader("Texture"))
         {
             ImGui.Text("Texture Path in Content Manager: ");
@@ -221,7 +241,5 @@ public class ParticleSystemSettingsGui
                 };
             }
         }
-
-        ImGui.PopItemWidth();
     }
 }

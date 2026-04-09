@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework.Content;
 
@@ -11,6 +12,8 @@ public class Map
     public string Name { get; set; } = string.Empty;
     public List<TileLayer> TileLayers { get; set; } = new List<TileLayer>(8);
     public List<ObjectLayer> ObjectLayers { get; set; } = new List<ObjectLayer>(8);
+    public string TilesetPath { get; set; } = string.Empty;
+    [JsonIgnore]
     public Tileset Tileset { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
@@ -20,6 +23,15 @@ public class Map
     public Map()
     { }
 
+    public static Map FromJson(string json,ContentManager content)
+    {
+        Map? map = JsonSerializer.Deserialize<Map>(json,MapJsonContext.Default.Map);
+        if(map == null)
+            throw new JsonException("Parsing json failed");
+        map.Tileset = Tileset.FromJsonFile(map.TilesetPath, content);
+        map.Tileset.Load(content);
+        return map;
+    }
     public Map(string name,int width, int height, int tileSize,string atlasContentPath,ContentManager contentManager)
     {
         Name = name;

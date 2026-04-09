@@ -171,7 +171,6 @@ public class ParticleEditor : IEditor
 
             if (ImGui.CollapsingHeader("Settings"))
             {
-                //_particleSystemSettings.DrawImGui();
                 _systemGui.DrawImGui(_core.GraphicsDevice,_core.Content);
             }
         }
