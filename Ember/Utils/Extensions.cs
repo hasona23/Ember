@@ -5,12 +5,19 @@ namespace Ember.Utils;
 
 public static class Extensions
 {
+    /// <summary>
+    /// Get Source rectangle based on Cell ID/Order
+    /// </summary>
+    /// <param name="atlas">Texture to get from</param>
+    /// <param name="cellSize">Size of Rectangle</param>
+    /// <param name="gid">Order of Cell in Texture Starting from ZERO</param>
+    /// <returns></returns>
     public static Rectangle GetSourceRect(this Texture2D atlas, int cellSize, int gid)
     {
         return new Rectangle
         {
-            X = ((gid - 1) % (atlas.Width / cellSize)) * cellSize,
-            Y = ((gid - 1) / (atlas.Width / cellSize)) * cellSize,
+            X = ((gid) % (atlas.Width / cellSize)) * cellSize,
+            Y = ((gid) / (atlas.Width / cellSize)) * cellSize,
             Width = cellSize,
             Height = cellSize,
         };
@@ -20,12 +27,12 @@ public static class Extensions
     {
         for (int i = 0; i <= rows; i++)
         {
-            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X,pos.Y+i *cellSize,cols * cellSize+1,1),color);
+            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X,pos.Y+i *cellSize,cols * cellSize,1),color);
         }
 
         for (int i = 0; i <= cols; i++)
         {
-            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X + i *cellSize,pos.Y,1,rows * cellSize),color);
+            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X + i *cellSize,pos.Y,-1,rows * cellSize),color);
         }
     }
 

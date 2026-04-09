@@ -105,7 +105,7 @@ public class ParticleSystem:IParticleSystem,IDisposable
     public void Draw(SpriteBatch spriteBatch)
     {
         Texture2D particleTexture = Core.Circle;
-        if (Settings.TextureName == Enum.GetName(ParticleShapes.Square))
+        if (Settings.TextureName == Enum.GetName(ParticleShapes.Pixel))
             particleTexture = Core.Pixel;
         else if (Settings.TextureName != Enum.GetName(ParticleShapes.Circle))
             particleTexture = _contentManager.Load<Texture2D>(Settings.TextureName);
@@ -135,7 +135,7 @@ public class ParticleSystem:IParticleSystem,IDisposable
                 size *= Settings.SizeChangeWithTime == ChangesWithTime.Increase ? (1 - lifeTimeRation) : lifeTimeRation;
             }
             
-            spriteBatch.Draw(particleTexture,
+            spriteBatch.Draw(Settings.ParticleTexture,
                 Particles.Data[i].Position,
                 null,
                 color,

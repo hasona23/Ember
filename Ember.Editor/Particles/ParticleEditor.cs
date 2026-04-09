@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using Ember.Editor.Particles.Gui;
 using Ember.Input;
 using Ember.Vfx.Particles;
 using ImGuiNET;
@@ -25,24 +26,22 @@ public class ParticleEditor : IEditor
         PropertyNameCaseInsensitive = true,
         WriteIndented = true
     };
-
-    private int _resolutionXBuffer;
-    private int _resolutionYBuffer;
+    
     private readonly Color _backgroundColor = Color.Black;
 
     public void Init(Core core)
     {
         _core = core;
-        _particleSystemSettings ??= new ParticleSystemSettings("Settings1", core.Content);
+        _particleSystemSettings ??= new ParticleSystemSettings("Settings1");
         _particleSystem =
             new ParticleSystem(_particleSystemSettings, _core.ScreenManager.Resolution() / 2f, core.Content);
-        _resolutionXBuffer = (int)core.ScreenManager.Resolution().X;
-        _resolutionYBuffer = (int)core.ScreenManager.Resolution().Y;
+        _systemGui = new ParticleSystemSettingsGui(_particleSystemSettings);
     }
 
     public void Destroy()
     {
         _particleSystem.Dispose();
+        _core.Content.Unload();
     }
 
     public void Update(GameTime gameTime)
@@ -87,18 +86,22 @@ public class ParticleEditor : IEditor
     public void Save(string path)
     {
         if (Path.GetExtension(path) != ParticleFileExtension)
-            path = $"{path}ParticleFileExtension";
+            path = $"{path}.{ParticleFileExtension}";
         string json = JsonSerializer.Serialize(_particleSystemSettings, _options);
         File.WriteAllText(path, json);
     }
 
+    private ParticleSystemSettingsGui _systemGui; 
     public void Load(string path)
     {
         if (Path.GetExtension(path) != ParticleFileExtension)
-            path = $"{path}ParticleFileExtension";
+            path = $"{path}.{ParticleFileExtension}";
         string json = File.ReadAllText(path);
+        if(_particleSystemSettings.TextureName != Core.Circle.Name && _particleSystemSettings.TextureName != Core.Pixel.Name)
+            _particleSystemSettings.ParticleTexture.Dispose();
         _particleSystemSettings = ParticleSystemSettings.ParseFromJson(json, _core.Content);
         _particleSystem.Settings = _particleSystemSettings;
+        _systemGui = new ParticleSystemSettingsGui(_particleSystemSettings);
     }
 
     public void DrawImGui()
@@ -164,18 +167,12 @@ public class ParticleEditor : IEditor
             {
                 ImGui.Text("Grid Cell Size: ");
                 ImGui.InputInt("##gridSize", ref _gridCellSize, 1, 1);
-                ImGui.Text("Resolution: ");
-                ImGui.InputInt("X", ref _resolutionXBuffer,1);
-                ImGui.InputInt("Y", ref _resolutionYBuffer, 1);
-                if (ImGui.Button("Apply"))
-                {
-                    _core.ScreenManager.ChangeResolution(new Point(_resolutionXBuffer, _resolutionYBuffer));
-                }
             }
 
             if (ImGui.CollapsingHeader("Settings"))
             {
-                _particleSystemSettings.DrawImGui();
+                //_particleSystemSettings.DrawImGui();
+                _systemGui.DrawImGui(_core.GraphicsDevice,_core.Content);
             }
         }
         ImGui.End();
