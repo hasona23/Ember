@@ -96,10 +96,7 @@ public class MapJsonImporter:IMapImporter
             .EnumerateArray()
             .Select(t => t.GetInt32() - 1)
             .ToArray();
-        map.TileLayers.Add(new TileLayer(layerData, tiles)
-        {
-            IsCollision = layerData.Tag.Contains(TileLayer.IsCollisionTag) ,
-        });
+        map.TileLayers.Add(new TileLayer(layerData, tiles));
     }
 
     public void ParseObjectLayer(JsonElement jsonObjectLayer, LayerData layerData,Map map)

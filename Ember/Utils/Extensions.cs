@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Ember.Utils;
 
@@ -12,7 +13,7 @@ public static class Extensions
     /// <param name="cellSize">Size of Rectangle</param>
     /// <param name="gid">Order of Cell in Texture Starting from ZERO</param>
     /// <returns></returns>
-    public static Rectangle GetSourceRect(this Texture2D atlas, int cellSize, int gid)
+    public static Rectangle GetSource(this Texture2D atlas, int cellSize, int gid)
     {
         return new Rectangle
         {
@@ -52,5 +53,15 @@ public static class Extensions
         spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X,rectangle.Y,thickness,rectangle.Height),color);
         //LEFT
         spriteBatch.Draw(Core.Pixel,new Rectangle(rectangle.X+rectangle.Width-thickness,rectangle.Y,thickness,rectangle.Height),color);
+    }
+
+    public static void DrawLine(this SpriteBatch spriteBatch,Vector2 start, Vector2 end, Color color)
+    {
+        var edge = end - start;
+        var angle = (float)Math.Atan2(edge.Y, edge.X);
+
+        spriteBatch.Draw(Core.Pixel,
+            new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), 1),
+            null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
     }
 }

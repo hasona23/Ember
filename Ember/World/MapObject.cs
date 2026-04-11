@@ -32,7 +32,7 @@ public struct MapObject
         X = rect.X;
         Y = rect.Y;
     }
-
+   
     public override string ToString()
     {
         return $"Name: {Name} - ({X},{Y}) - {Width}x{Height} - GID: {Gid}";
