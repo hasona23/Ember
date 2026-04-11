@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Ember.World;
 
@@ -10,12 +8,22 @@ public class ObjectLayer
     public List<MapObject> Objects { get; set; } = new List<MapObject>(8);
     public LayerData Data { get; set; }
     
-    
-    [JsonConstructor]
-    public ObjectLayer()
-    {}
-    public ObjectLayer(string name, string tag, Map map)
+    public ObjectLayer(LayerData data, params MapObject[] objects)
     {
-        Data = new LayerData(name, tag, map);
+        Data = data;
+        Objects.AddRange(objects);
+    }
+
+    public override string ToString()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+       
+        stringBuilder.AppendLine($"Object Layer: {Data.Name} ({Data.Tag})");
+        stringBuilder.AppendLine($"Objects: {Objects.Count}");
+        for (int i = 0; i < Objects.Count; i++)
+        {
+            stringBuilder.AppendLine(Objects[i].ToString());
+        }
+        return stringBuilder.ToString();
     }
 }

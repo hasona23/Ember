@@ -5,16 +5,18 @@ namespace Ember.World;
 public struct MapObject
 {
     public int? Gid;
+    public string Name;
     public int X;
     public int Y;
     public int? Width;
     public int? Height;
 
-    public MapObject(int? gid, int x, int y, int width, int height)
+    public MapObject(int? gid,string name, int x, int y, int width, int height)
     {
         Gid = gid;
         X = x;
         Y = y;
+        Name = name;
         Width = width;
         Height = height;
     }
@@ -29,5 +31,10 @@ public struct MapObject
     {
         X = rect.X;
         Y = rect.Y;
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {Name} - ({X},{Y}) - {Width}x{Height} - GID: {Gid}";
     }
 }

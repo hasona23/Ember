@@ -13,7 +13,7 @@ public abstract class Core : Game
     public static Texture2D Circle { get; private set; } = null!;
     public static Texture2D Pixel { get; private set; } = null!;
     public static SpriteFont DefaultFont {  get; private set; } = null!;
-    public Camera2D Camera { get; private set; } = new Camera2D();
+    public Camera2D Camera { get;  set; } = new Camera2D();
     
     protected readonly GraphicsDeviceManager Graphics;
     protected SpriteBatch SpriteBatch = null!;

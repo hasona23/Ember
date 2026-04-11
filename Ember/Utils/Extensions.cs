@@ -32,7 +32,7 @@ public static class Extensions
 
         for (int i = 0; i <= cols; i++)
         {
-            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X + i *cellSize,pos.Y,-1,rows * cellSize),color);
+            spriteBatch.Draw(Core.Pixel,new Rectangle(pos.X + i *cellSize,pos.Y,1,rows * cellSize),color);
         }
     }
 

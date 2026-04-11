@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework;
 
@@ -8,29 +9,20 @@ namespace Ember.World;
 
 public class TileLayer
 {
-    [JsonInclude]
-    public int[] Tiles { get; set; } =  Array.Empty<int>();
-    public LayerData Data { get; set; } 
-    public bool IsSolid { get; set; } = false;
-    public LayerType Type { get; set; } = LayerType.Ground;
-    public enum LayerType
-    {
-        Background,
-        Ground,
-        Foreground
-    }
-    
+   
+    public int[] Tiles { get; set; }
+    public LayerData Data { get; set; }
+    public bool IsCollision { get; set; } = false;
+  
+    public const string IsCollisionTag = "IsCollision";
 
-    public TileLayer(string name, string tag, Map map)
+    public TileLayer(LayerData data,params int[] tiles)
     {
-        Data = new LayerData(name, tag, map);
-        Tiles = new int[map.Width * map.Height];
+        Data = data;
+        Tiles = tiles;
     }
-    [JsonConstructor]
-    public TileLayer()
-    {}
 
-    private static Vector2[] _offsets =
+    private static readonly Vector2[] Offsets =
     [
         new Vector2(1, 1), new Vector2(0, 1), new Vector2(-1, 1),
         new Vector2(1, 0), new Vector2(0, 0), new Vector2(-1, 0),
@@ -41,7 +33,7 @@ public class TileLayer
     {
         List<Tile> tiles = new List<Tile>(9);
         position = Vector2.Floor(position/Data.Map.TileSize);
-        foreach (var offset in _offsets)
+        foreach (var offset in Offsets)
         {
             position += offset;
             int index = (int)(position.X + position.Y * Data.Map.Width);
@@ -66,5 +58,20 @@ public class TileLayer
         if (index >= 0 && index < Tiles.Length)
             return new Tile(Tiles[index],new Rectangle((position * Data.Map.TileSize).ToPoint(), new Point(Data.Map.TileSize)));
         return null;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"Tile Layer: {Data.Name} ({Data.Tag})");
+        sb.AppendLine($"Tiles Count: {Tiles.Length}");
+        sb.AppendLine($"Is Collision: {IsCollision}");
+        for (int i = 0; i < Tiles.Length; i++)
+        {
+            sb.Append(Tiles[i]);
+            if((i+1)%Data.Map.Width == 0)
+                sb.AppendLine();
+        }
+        return sb.ToString();
     }
 }

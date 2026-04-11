@@ -31,6 +31,7 @@
       <ProjectReference Include="..\Ember\Ember.csproj" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="Content\Maps\" />
       <Folder Include="Content\ParticleSystemSettings\" />
     </ItemGroup>
 </Project>

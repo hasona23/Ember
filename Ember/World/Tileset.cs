@@ -1,32 +1,24 @@
 ﻿using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ember.World;
 
-public struct Tileset(string contentPath)
+public struct Tileset
 {
-    public string Name { get; set; } = System.IO.Path.GetFileNameWithoutExtension(contentPath);
-    public string Path { get; set; } =  contentPath;
-    [JsonIgnore]
-    public Texture2D Atlas { get; set; }
-    public void Load(ContentManager content)
-    {
-        Atlas = content.Load<Texture2D>(Path);
-    }
+    public string Name { get; set; }
+    public string AtlasName { get; set; }
+    public Texture2D? Atlas { get; private set; } = null;
 
-    public static Tileset FromJsonFile(string contentPath,ContentManager content)
+    public Tileset(string json)
     {
-        return FromJson(File.ReadAllText(contentPath),content);
+        JsonDocument jsonDocument = JsonDocument.Parse(json);
+        Name = jsonDocument.RootElement.GetProperty("name").GetString() ?? throw new JsonException("name is null");
+        AtlasName = Path.GetFileNameWithoutExtension(jsonDocument.RootElement.GetProperty("image").GetString()??throw new JsonException("atlasName is null"));
     }
-    public static Tileset FromJson(string json,ContentManager content)
+    public void Load(string atlasPath,ContentManager content)
     {
-        Tileset tileset = JsonSerializer.Deserialize(json,MapJsonContext.Default.Tileset);
-        if (string.IsNullOrEmpty(tileset.Name) || string.IsNullOrEmpty(tileset.Path))
-            throw new JsonException("Failed to parse tileset");
-        tileset.Load(content);
-        return tileset;
+        Atlas = content.Load<Texture2D>(atlasPath);
     }
 }

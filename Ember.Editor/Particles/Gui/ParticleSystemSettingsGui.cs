@@ -10,9 +10,9 @@ using Vec4 = System.Numerics.Vector4;
 using Vec2 = System.Numerics.Vector2;
 namespace Ember.Editor.Particles.Gui;
 
-public class ParticleSystemSettingsGui
+public struct ParticleSystemSettingsGui
 {
-    private ParticleSystemSettings _settings;
+    private readonly ParticleSystemSettings _settings;
 
     public ParticleSystemSettingsGui(ParticleSystemSettings settings)
     {
@@ -40,7 +40,7 @@ public class ParticleSystemSettingsGui
     }
     #region Buffers
 
-    private List<string> _availableTextures;
+    private readonly List<string> _availableTextures;
     private int _availableTextureIndex;
     private string _newTextureBuffer;
 

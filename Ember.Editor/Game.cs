@@ -27,7 +27,7 @@ public class Game() : Core(new WindowSettings(Title, Width, Height))
         }
 
         _editorNames = _editors.Keys.ToList();
-        _currentEditor = "TileEditor";
+        _currentEditor = "ParticleEditor";
         (_resolutionXBuffer, _resolutionYBuffer) = ScreenManager.Resolution().ToPoint();
     }
 
