@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace Ember.EntitySystem;
@@ -78,11 +79,11 @@ public sealed class Entity
                 component.Update();
     }
 
-    public void Draw()
+    public void Draw(SpriteBatch spriteBatch)
     {
         foreach (var (_, component) in _components)
             if (component.IsActive)
-                component.Draw();
+                component.Draw(spriteBatch);
     }
 
     public void Destroy()

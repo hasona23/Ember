@@ -13,7 +13,7 @@ public abstract class Core : Game
     public static Texture2D Circle { get; private set; } = null!;
     public static Texture2D Pixel { get; private set; } = null!;
     public static SpriteFont DefaultFont {  get; private set; } = null!;
-    public Camera2D Camera { get;  set; } = new Camera2D();
+    public Camera2D Camera = new Camera2D();
     
     protected readonly GraphicsDeviceManager Graphics;
     protected SpriteBatch SpriteBatch = null!;
@@ -90,9 +90,6 @@ public abstract class Core : Game
     {
         DrawCore(gameTime);
         Time.UpdateFps(gameTime);
-        ImGuiRenderer.BeforeLayout(gameTime);
-        DrawImGui();
-        ImGuiRenderer.AfterLayout();
     }
 
 
@@ -100,5 +97,4 @@ public abstract class Core : Game
     protected abstract void Destroy();
     protected abstract void UpdateCore(GameTime gameTime);
     protected abstract void DrawCore(GameTime gameTime);
-    protected virtual void DrawImGui(){}
 }
