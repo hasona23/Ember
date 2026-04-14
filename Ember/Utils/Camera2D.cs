@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework;
 
-public struct Camera2D()
+public class Camera2D
 {
     public Vector2 Position = Vector2.Zero;
     public float Rotation = 0f;

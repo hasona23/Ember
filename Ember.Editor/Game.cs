@@ -65,9 +65,13 @@ public class Game() : Core(new WindowSettings(Title, Width, Height))
             editor.Draw(GraphicsDevice, SpriteBatch);
         ScreenManager.DetachScreenBuffer();
         ScreenManager.DrawScreen(SpriteBatch);
+
+        ImGuiRenderer.BeforeLayout(gameTime);
+        DrawImGui();
+        ImGuiRenderer.AfterLayout();
     }
 
-    protected override void DrawImGui()
+    protected void DrawImGui()
     {
         if (!_editors.ContainsKey(_currentEditor))
         {

@@ -41,7 +41,7 @@ public static class Extensions
     {
         spriteBatch.Draw(Core.Pixel,rectangle,color);
     }
-
+    
     public static void DrawHollowRectangle(this SpriteBatch spriteBatch, Rectangle rectangle, int thickness,
         Color color)
     {

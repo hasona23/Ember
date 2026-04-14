@@ -10,7 +10,7 @@ namespace Ember.Vfx.Particles;
 
 public class ParticleSystemSettings
 {
-    public string Name;
+    public string Name = "Particle System 1";
     public string TextureName = Core.Circle.Name;
     [JsonIgnore]
     public Texture2D ParticleTexture = Core.Circle;
@@ -69,9 +69,7 @@ public class ParticleSystemSettings
     [JsonConstructor]
     public ParticleSystemSettings()
     { }
-    
-    // ReSharper disable once NotNullOrRequiredMemberIsNotInitialized
-    // Buffers are all setup in SetupBuffers() Methods
+   
     public ParticleSystemSettings(string name)
     {
         Name = name;

@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text.Json;
 
 namespace Ember.World.MapImporters;
@@ -48,8 +46,8 @@ public class MapJsonImporter:IMapImporter
     {
         string name = jsonLayer.TryGetProperty("name", out var layerName) ? layerName.ToString() : $"UN-NAMED LAYER";
         bool isVisible = !jsonLayer.TryGetProperty("visible", out var layerVisible) || !layerVisible.GetBoolean();
-        string? tag = jsonLayer.TryGetProperty("class", out var tagProp) ? tagProp.GetString() : string.Empty;
-        System.Drawing.Color color = jsonLayer.TryGetProperty("tintcolor", out var tintColor) ? ColorTranslator.FromHtml(tintColor.GetString() ?? "#FFFFFF") : System.Drawing.Color.White;
+        string tag = jsonLayer.TryGetProperty("class", out var tagProp) ? tagProp.GetString()??string.Empty : string.Empty;
+        Color color = jsonLayer.TryGetProperty("tintcolor", out var tintColor) ? ColorTranslator.FromHtml(tintColor.GetString() ?? "#FFFFFF") : System.Drawing.Color.White;
         LayerData layerData = new LayerData(name, tag, map)
         {
             Alpha = jsonLayer.TryGetProperty("opacity", out var opacity) ? opacity.GetSingle() : 1f,
@@ -90,16 +88,18 @@ public class MapJsonImporter:IMapImporter
         return new Tileset(File.ReadAllText(filePath));
     }
 
-    public void ParseTileLayer(JsonElement jsonTileLayer, LayerData layerData,Map map)
+    private void ParseTileLayer(JsonElement jsonTileLayer, LayerData layerData,Map map)
     {
+        Console.WriteLine($"Parsing Tile Layer: {layerData.Name}");
         int[] tiles = jsonTileLayer.GetProperty("data")
             .EnumerateArray()
             .Select(t => t.GetInt32() - 1)
             .ToArray();
+       
         map.TileLayers.Add(new TileLayer(layerData, tiles));
     }
 
-    public void ParseObjectLayer(JsonElement jsonObjectLayer, LayerData layerData,Map map)
+    private void ParseObjectLayer(JsonElement jsonObjectLayer, LayerData layerData,Map map)
     {
         int capacity = jsonObjectLayer.GetProperty("objects").GetArrayLength();
         List<MapObject> objects = new List<MapObject>(capacity);

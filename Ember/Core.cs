@@ -1,4 +1,5 @@
 ﻿using Ember.Input;
+using Ember.Scenes;
 using Ember.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -13,19 +14,22 @@ public abstract class Core : Game
     public static Texture2D Circle { get; private set; } = null!;
     public static Texture2D Pixel { get; private set; } = null!;
     public static SpriteFont DefaultFont {  get; private set; } = null!;
-    public Camera2D Camera = new Camera2D();
+    public static bool DebugMode { get; set; } = false;
+    public Camera2D Camera = new();
     
-    protected readonly GraphicsDeviceManager Graphics;
-    protected SpriteBatch SpriteBatch = null!;
+    public readonly GraphicsDeviceManager Graphics;
+    public SpriteBatch SpriteBatch = null!;
     public ImGuiRenderer ImGuiRenderer { get; private set; }= null!;
     public ScreenManager ScreenManager { get; set; } = null!;
-    protected readonly WindowSettings WindowSettings;
+    public readonly WindowSettings WindowSettings;
+    public SceneManager SceneManager;
     protected Core(WindowSettings windowSettings)
     {
         Graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         WindowSettings = windowSettings;
+        SceneManager = new SceneManager();
     }
 
     protected override void Initialize()
@@ -52,13 +56,14 @@ public abstract class Core : Game
         Destroy();
         Pixel.Dispose();
         Circle.Dispose();
+        SceneManager.Destroy();
     }
 
     private void CreateShapeTextures()
     {
         Pixel = new Texture2D(GraphicsDevice, 1, 1);
         Pixel.Name = "Pixel";
-        Pixel.SetData(new[] { Color.White });
+        Pixel.SetData([Color.White]);
 
         int diameter = 16;
         Color[] data = new Color[diameter*diameter];
@@ -83,11 +88,13 @@ public abstract class Core : Game
         
         InputManager.Update(gameTime,ScreenManager);
         Time.UpdateUps(gameTime);
+       
         UpdateCore(gameTime); 
     }
 
     protected override void Draw(GameTime gameTime)
     {
+        
         DrawCore(gameTime);
         Time.UpdateFps(gameTime);
     }

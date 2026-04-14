@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework;
 
 
@@ -51,17 +50,19 @@ public class TileLayer
 
     public List<Tile> GetTilesNear(Vector2 position)
     {
-        List<Tile> tiles = new List<Tile>(9);
+        List<Tile> nearTilesBuffer = new List<Tile>(9);
         position = Vector2.Floor(position/(Data.Map.TileSize*Data.Map.Scale));
         foreach (var offset in Offsets)
         {
             position += offset;
             int index = (int)(position.X + position.Y * Data.Map.Width);
-            if(index >= 0 && index < tiles.Count)
-                tiles.Add(new Tile(Tiles[index],new Rectangle((position * Data.Map.TileSize*Data.Map.Scale).ToPoint(), new Point(Data.Map.TileSize*Data.Map.Scale))));
+            if (index >= 0 && index < Tiles.Length && Tiles[index] != -1)
+            {
+                nearTilesBuffer.Add(new Tile(Tiles[index], new Rectangle((position * Data.Map.TileSize * Data.Map.Scale).ToPoint(), new Point(Data.Map.TileSize * Data.Map.Scale))));   
+            }
             position -= offset;
         }
-        return tiles;
+        return nearTilesBuffer;
     }
 
     public void SetTile(Vector2 position, int gid)

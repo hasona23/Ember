@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Collections.Generic;
 using Ember.World.MapRenderers;
-using Microsoft.Xna.Framework;
 
 namespace Ember.World;
 
@@ -21,5 +15,5 @@ public class Map
     public int TileSize { get; set; }
     public int Scale { get; set; } = 1;
 
-    public IMapRenderer Renderer { get; set; }
+    public IMapRenderer? Renderer { get; set; }
 }

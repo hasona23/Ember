@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Text.Json.Serialization;
 
 namespace Ember.World;
 
 public struct MapObject
 {
     public int? Gid;
-    public string Name;
+    public string? Name;
     public int X;
     public int Y;
     public int? Width;
@@ -32,7 +33,8 @@ public struct MapObject
         X = rect.X;
         Y = rect.Y;
     }
-   
+    [JsonIgnore]
+    public Vector2 Position => new Vector2(X, Y);
     public override string ToString()
     {
         return $"Name: {Name} - ({X},{Y}) - {Width}x{Height} - GID: {Gid}";
