@@ -1,4 +1,4 @@
-﻿namespace Ember.Input;
+﻿namespace Ember.Inputs;
 
 public enum MouseButton
 {

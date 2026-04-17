@@ -1,4 +1,4 @@
-﻿namespace Ember.World.MapImporters;
+﻿namespace Ember.Maps.MapImporters;
 
 public interface IMapImporter
 {

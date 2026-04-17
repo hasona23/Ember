@@ -1,4 +1,4 @@
-﻿using Ember.Input;
+﻿using Ember.Inputs;
 using Ember.Scenes;
 using Ember.Utils;
 using Microsoft.Xna.Framework;
@@ -15,6 +15,7 @@ public abstract class Core : Game
     public static Texture2D Pixel { get; private set; } = null!;
     public static SpriteFont DefaultFont {  get; private set; } = null!;
     public static bool DebugMode { get; set; } = false;
+    public static bool ShowImGui { get; set; } = false;
     public Camera2D Camera = new();
     
     public readonly GraphicsDeviceManager Graphics;
@@ -86,7 +87,7 @@ public abstract class Core : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
         
-        InputManager.Update(gameTime,ScreenManager);
+        Input.Update(gameTime,ScreenManager);
         Time.UpdateUps(gameTime);
        
         UpdateCore(gameTime); 

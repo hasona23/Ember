@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public static class TileLayerTags
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ember.World.MapRenderers;
+namespace Ember.Maps.MapRenderers;
 
 public interface IMapRenderer
 {

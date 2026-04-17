@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Text;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public struct Route(string name,params Point[] points)
 {

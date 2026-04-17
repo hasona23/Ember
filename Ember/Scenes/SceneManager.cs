@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ember.Scenes;
+﻿namespace Ember.Scenes;
 
 public class SceneManager
 {
@@ -29,6 +25,10 @@ public class SceneManager
     public void Draw()
     {
         _currentScene?.Draw();
+    }
+    public void DrawImGui()
+    {
+        _currentScene?.DrawImGui();
     }
     public void Destroy()
     {

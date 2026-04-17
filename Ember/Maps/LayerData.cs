@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public struct LayerData(string name,string tag,Map map)
 {

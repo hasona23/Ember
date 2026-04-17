@@ -1,4 +1,4 @@
-﻿namespace Ember.World;
+﻿namespace Ember.Maps;
 
 public static class TiledLayerTypes
 {

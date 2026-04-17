@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace Ember.World.MapImporters;
+namespace Ember.Maps.MapImporters;
 
 public class MapJsonImporter:IMapImporter
 {

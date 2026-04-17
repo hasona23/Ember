@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public struct Tileset
 {

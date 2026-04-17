@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Ember.World.MapRenderers;
+using Ember.Maps.MapRenderers;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public class Map
 {

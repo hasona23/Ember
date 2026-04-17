@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using Ember.Editor.Particles.Gui;
-using Ember.Input;
+using Ember.Inputs;
 using Ember.Vfx.Particles;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
@@ -51,13 +51,13 @@ public class ParticleEditor : IEditor
         _particleSystemSettings.Bounds.Location -= (_particleSystemSettings.Bounds.Size.ToVector2()/2).ToPoint();
         if (ImGui.IsAnyItemHovered())
             return;
-        if (InputManager.Keyboard.IsKeyPressed(Keys.E))
+        if (Input.Keyboard.IsKeyPressed(Keys.E))
             _particleSystem.Emit();
 
-        if (InputManager.Keyboard.IsKeyDown(Keys.R))
+        if (Input.Keyboard.IsKeyDown(Keys.R))
             _particleSystem.Emit();
         
-        if(InputManager.Keyboard.IsKeyPressed(Keys.C))
+        if(Input.Keyboard.IsKeyPressed(Keys.C))
             Array.Clear(_particleSystem.Particles.Data);
     }
 

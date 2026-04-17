@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Text.Json.Serialization;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public struct MapObject
 {

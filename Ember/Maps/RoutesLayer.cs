@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public class RoutesLayer(LayerData data,params Route[] routes)
 {

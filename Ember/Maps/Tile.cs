@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Ember.World;
+namespace Ember.Maps;
 
 public struct Tile(int gid,Rectangle bounds)
 {
