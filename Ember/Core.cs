@@ -16,14 +16,14 @@ public abstract class Core : Game
     public static SpriteFont DefaultFont {  get; private set; } = null!;
     public static bool DebugMode { get; set; } = false;
     public static bool ShowImGui { get; set; } = false;
-    public Camera2D Camera = new();
+    public Camera2D Camera { get; set; } = new();
     
     public readonly GraphicsDeviceManager Graphics;
     public SpriteBatch SpriteBatch = null!;
     public ImGuiRenderer ImGuiRenderer { get; private set; }= null!;
-    public ScreenManager ScreenManager { get; set; } = null!;
-    public readonly WindowSettings WindowSettings;
-    public SceneManager SceneManager;
+    public ScreenManager Screen { get; set; } = null!;
+    public WindowSettings WindowSettings { get; }
+    public SceneManager SceneManager { get; set; }
     protected Core(WindowSettings windowSettings)
     {
         Graphics = new GraphicsDeviceManager(this);
@@ -35,7 +35,7 @@ public abstract class Core : Game
 
     protected override void Initialize()
     {
-        ScreenManager = new ScreenManager(WindowSettings,Window,Graphics);
+        Screen = new ScreenManager(WindowSettings,Window,Graphics);
         base.Initialize();
         SpriteBatch = new SpriteBatch(GraphicsDevice);
         CreateShapeTextures();
@@ -87,7 +87,7 @@ public abstract class Core : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
         
-        Input.Update(gameTime,ScreenManager);
+        Input.Update(gameTime,Screen);
         Time.UpdateUps(gameTime);
        
         UpdateCore(gameTime); 

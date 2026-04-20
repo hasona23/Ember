@@ -5,7 +5,7 @@ public class SceneManager
     private Scene? _currentScene;
     private Scene? _nextScene;
 
-    public Scene CurrentScene => _currentScene;
+    public Scene? CurrentScene => _currentScene;
 
     public void ChangeScene(Scene newScene)
     {

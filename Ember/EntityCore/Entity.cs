@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using ImGuiNET;
 
 namespace Ember.EntityCore;
 
@@ -8,16 +9,24 @@ public abstract class Entity(string name, Vector2 position, World world)
     public string Name { get; set; } = name;
     public Transform2D Transform  = new(position);
     public bool IsActive { get; set;} = true;
-    public bool IsDead { get; set; } = false;
-    protected World World { get; set; } = world;
+    public bool IsDead { get; private set; } = false;
+    public World World { get; private set; } = world;
 
     public abstract void Update();
     public abstract void Draw(SpriteBatch spriteBatch);
+    public abstract void Init();
     public virtual void Destroy()
     {
         IsDead = true;
         IsActive = false;
     }
-    public abstract void DrawImGui();
+
+    public virtual void DrawImGui()
+    {
+        ImGui.Text($"Entity: {Name}");
+        ImGui.Text($"Transform: {Transform.Position} - {Transform.Rotation} - x{Transform.Scale}");
+        ImGui.Text($"IsActive: {IsActive}");
+
+    }
 
 }

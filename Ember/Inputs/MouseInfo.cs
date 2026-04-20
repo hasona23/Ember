@@ -7,13 +7,13 @@ public class MouseInfo
 {
     public MouseState PreviousState = new();
     public MouseState CurrentState = Mouse.GetState();
-    public Vector2 MousePosition { get; private set; }
+    public Vector2 Position { get; private set; }
     private Vector2 _previousMousePosition;
 
     public void Update(ScreenManager screenManager)
     {
-        _previousMousePosition = MousePosition;
-        MousePosition = screenManager.GetAdjustedMousePosition();
+        _previousMousePosition = Position;
+        Position = screenManager.GetAdjustedMousePosition();
         PreviousState = CurrentState;
         CurrentState = Mouse.GetState();
     }
@@ -24,7 +24,7 @@ public class MouseInfo
     /// <summary>
     /// Gets the difference in the mouse cursor position between the previous and current frame.
     /// </summary>
-    public Vector2 PositionDelta => MousePosition - _previousMousePosition;
+    public Vector2 PositionDelta => Position - _previousMousePosition;
 
     
     /// <summary>

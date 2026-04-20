@@ -12,7 +12,7 @@ namespace Ember.EntityCore;
 /// </summary>
 /// <typeparam name="TEntity">Type of Entity</typeparam>
 /// <param name="name">Name of Manager</param>
-public class EntityManager<TEntity>(string name,World world) : Entity(name, Vector2.Zero,world) where TEntity : Entity
+public class EntityManager<TEntity>(string name, World world) : Entity(name, Vector2.Zero, world) where TEntity : Entity
 {
     #region Fields
     private readonly List<TEntity> _entities = new List<TEntity>();
@@ -22,7 +22,16 @@ public class EntityManager<TEntity>(string name,World world) : Entity(name, Vect
     #endregion
 
     #region BaseMethods
-   
+    public override void Init()
+    {
+        _entities.AddRange(_entitiesToAdd);
+        _entitiesToAdd.Clear();
+
+        foreach (var entity in _entities)
+        {
+            entity.Init();
+        }
+    }
     public override void Destroy()
     {
         foreach (var entity in _entities)
@@ -35,7 +44,6 @@ public class EntityManager<TEntity>(string name,World world) : Entity(name, Vect
     
     public override void Draw(SpriteBatch spriteBatch)
     {
-        FlushEntityQueues();
         foreach (var entity in _entities)
         {
             if(entity.IsActive)
@@ -45,6 +53,7 @@ public class EntityManager<TEntity>(string name,World world) : Entity(name, Vect
 
     public override void DrawImGui()
     {
+        ImGui.Indent();
         foreach (var entity in _entities)
         {
             if(!entity.IsActive)
@@ -54,6 +63,7 @@ public class EntityManager<TEntity>(string name,World world) : Entity(name, Vect
             if(!entity.IsActive)
                 ImGui.PopStyleColor();
         }
+        ImGui.Unindent();
     }
 
     public override void Update()
@@ -71,6 +81,10 @@ public class EntityManager<TEntity>(string name,World world) : Entity(name, Vect
     public void FlushEntityQueues()
     {
         _entities.AddRange(_entitiesToAdd);
+        foreach(var entity in _entitiesToAdd)
+        {
+            entity.Init();
+        }
         _entitiesToAdd.Clear();
 
         _entities.RemoveAll(entity => entity.IsDead);

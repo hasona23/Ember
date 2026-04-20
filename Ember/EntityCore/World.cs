@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ember.EntityCore;
 
@@ -15,7 +12,10 @@ public class World
     {
         EntityManager = new EntityManager<Entity>("WorldEntityManager", this);
     }
-
+    public void Init()
+    {
+        EntityManager.Init();
+    }
     public void Update()
     {
         EntityManager.Update();

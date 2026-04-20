@@ -26,11 +26,7 @@ public class MapJsonImporter:IMapImporter
         map.Height = document.RootElement.GetProperty("height").GetInt32();
         map.TileSize = document.RootElement.GetProperty("tilewidth").GetInt32();
         
-        //========= TEST DONE ==========
-        Console.WriteLine($"Map Name: {map.Name}");
-        Console.WriteLine($"{map.Tileset.Name} - {map.Tileset.AtlasName}");
-        Console.WriteLine($"{map.Width}x{map.Height}");
-        Console.WriteLine($"{map.TileSize}");
+       
 
         foreach (var layer in document.RootElement.GetProperty("layers").EnumerateArray())
         {
@@ -90,7 +86,7 @@ public class MapJsonImporter:IMapImporter
 
     private void ParseTileLayer(JsonElement jsonTileLayer, LayerData layerData,Map map)
     {
-        Console.WriteLine($"Parsing Tile Layer: {layerData.Name}");
+        
         int[] tiles = jsonTileLayer.GetProperty("data")
             .EnumerateArray()
             .Select(t => t.GetInt32() - 1)

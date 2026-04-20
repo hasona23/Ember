@@ -34,7 +34,7 @@ public class ParticleEditor : IEditor
         _core = core;
         _particleSystemSettings ??= new ParticleSystemSettings("Settings1");
         _particleSystem =
-            new ParticleSystem(_particleSystemSettings, _core.ScreenManager.Resolution() / 2f, core.Content);
+            new ParticleSystem(_particleSystemSettings, _core.Screen.Resolution / 2f, core.Content);
         _systemGui = new ParticleSystemSettingsGui(_particleSystemSettings);
     }
 
@@ -47,7 +47,7 @@ public class ParticleEditor : IEditor
     public void Update(GameTime gameTime)
     {
         _particleSystem.Update();
-        _particleSystemSettings.Bounds.Location = (_core.ScreenManager.Resolution() / 2).ToPoint();
+        _particleSystemSettings.Bounds.Location = (_core.Screen.Resolution / 2).ToPoint();
         _particleSystemSettings.Bounds.Location -= (_particleSystemSettings.Bounds.Size.ToVector2()/2).ToPoint();
         if (ImGui.IsAnyItemHovered())
             return;
@@ -65,7 +65,7 @@ public class ParticleEditor : IEditor
     {
         graphicsDevice.Clear(_backgroundColor);
         spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.Opaque);
-        Vector2 resolution = _core.ScreenManager.Resolution();
+        Vector2 resolution = _core.Screen.Resolution;
         for (int i = 0; i <= (int)(resolution.X/_gridCellSize); i++)
         {
             spriteBatch.Draw(Core.Pixel,new Rectangle(i*_gridCellSize, 0, 2, (int)resolution.Y),Color.DarkGray);

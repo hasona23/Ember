@@ -28,7 +28,7 @@ public class Game() : Core(new WindowSettings(Title, Width, Height))
 
         _editorNames = _editors.Keys.ToList();
         _currentEditor = "ParticleEditor";
-        (_resolutionXBuffer, _resolutionYBuffer) = ScreenManager.Resolution().ToPoint();
+        (_resolutionXBuffer, _resolutionYBuffer) = Screen.Resolution.ToPoint();
     }
 
     private void GetAllEditors()
@@ -60,11 +60,11 @@ public class Game() : Core(new WindowSettings(Title, Width, Height))
 
     protected override void DrawCore(GameTime gameTime)
     {
-        ScreenManager.AttachScreenBuffer();
+        Screen.AttachScreenBuffer();
         if (_editors.TryGetValue(_currentEditor, out var editor))
             editor.Draw(GraphicsDevice, SpriteBatch);
-        ScreenManager.DetachScreenBuffer();
-        ScreenManager.DrawScreen(SpriteBatch);
+        Screen.DetachScreenBuffer();
+        Screen.DrawScreen(SpriteBatch);
 
         ImGuiRenderer.BeforeLayout(gameTime);
         DrawImGui();
@@ -128,14 +128,14 @@ public class Game() : Core(new WindowSettings(Title, Width, Height))
             ImGui.InputInt("Y", ref _resolutionYBuffer, 1);
             if (ImGui.Button("Apply"))
             {
-                ScreenManager.ChangeResolution(new Point(_resolutionXBuffer, _resolutionYBuffer));
+                Screen.ChangeResolution(new Point(_resolutionXBuffer, _resolutionYBuffer));
                 ImGui.CloseCurrentPopup();
             }
 
             ImGui.SameLine();
             if (ImGui.Button("Toggle Full Screen"))
             {
-                ScreenManager.ToggleFullScreen();
+                Screen.IsFullScreen = !Screen.IsFullScreen;
                 ImGui.CloseCurrentPopup();
             }
 
