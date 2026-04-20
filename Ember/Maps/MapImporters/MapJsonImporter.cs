@@ -67,7 +67,7 @@ public class MapJsonImporter:IMapImporter
                 {
                     if (jsonLayer.TryGetProperty("layers", out var layers))
                     {
-                     
+                        
                         foreach (var layer in layers.EnumerateArray())
                             HandleLayer(layer, layer.GetProperty("type").ToString(),map);
                     }
@@ -87,10 +87,9 @@ public class MapJsonImporter:IMapImporter
     private void ParseTileLayer(JsonElement jsonTileLayer, LayerData layerData,Map map)
     {
         
-        int[] tiles = jsonTileLayer.GetProperty("data")
+        int[] tiles = [.. jsonTileLayer.GetProperty("data")
             .EnumerateArray()
-            .Select(t => t.GetInt32() - 1)
-            .ToArray();
+            .Select(t => t.GetInt32() - 1)];
        
         map.TileLayers.Add(new TileLayer(layerData, tiles));
     }
@@ -105,10 +104,10 @@ public class MapJsonImporter:IMapImporter
             if (jsonObject.TryGetProperty("polyline", out var polyline))
             {
                 Microsoft.Xna.Framework.Point[] points = new Microsoft.Xna.Framework.Point[polyline.GetArrayLength()];
-                var pointsJson = polyline.EnumerateArray();
+                var pointsJson = polyline.EnumerateArray().ToArray();
                 for (int i = 0; i < points.Length; i++)
                 {
-                    var pointJson = pointsJson.ElementAt(i);
+                    var pointJson = pointsJson[i];
                     points[i] = new Microsoft.Xna.Framework.Point(pointJson.GetProperty("x").GetInt32(), pointJson.GetProperty("y").GetInt32());
                 }
                 Route route = new Route(jsonObject.TryGetProperty("name", out var name) ? name.GetString() ?? "UN-NAMED ROUTE" : "UN-NAMED ROUTE", points);
@@ -129,9 +128,9 @@ public class MapJsonImporter:IMapImporter
             }
         }
         if(objects.Count > 0)
-            map.ObjectLayers.Add(new ObjectLayer(layerData, objects.ToArray()));
+            map.ObjectLayers.Add(new ObjectLayer(layerData, [.. objects]));
         if(routes.Count > 0)
-            map.RoutesLayers.Add(new RoutesLayer(layerData, routes.ToArray()));
+            map.RoutesLayers.Add(new RoutesLayer(layerData, [.. routes]));
     }
 
 }
